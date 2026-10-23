@@ -7,6 +7,7 @@ const list = document.getElementById("list");
 const empty = document.getElementById("empty");
 const count = document.getElementById("count");
 const clearDone = document.getElementById("clear-done");
+const exportButton = document.getElementById("export");
 const template = document.getElementById("todo-template");
 const filterButtons = document.querySelectorAll(".filter");
 
@@ -78,6 +79,14 @@ function render() {
   count.textContent = `${left} task${left === 1 ? "" : "s"} left`;
   empty.hidden = visible.length > 0;
   clearDone.hidden = !todos.some((t) => t.done);
+  exportButton.disabled = todos.length === 0;
+}
+
+// Tasks saved before `created` was recorded: ids start with Date.now() in base 36.
+function createdAt(todo) {
+  if (todo.created) return todo.created;
+  const ms = parseInt(todo.id.slice(0, 8), 36);
+  return ms > Date.UTC(2020, 0, 1) && ms <= Date.now() ? ms : null;
 }
 
 function update(next) {
@@ -91,7 +100,7 @@ form.addEventListener("submit", (event) => {
   const text = input.value.trim();
   if (!text) return;
   const id = Date.now().toString(36) + Math.random().toString(36).slice(2);
-  update([...todos, { id, text, due: dateInput.value, done: false }]);
+  update([...todos, { id, text, due: dateInput.value, done: false, created: Date.now() }]);
   input.value = "";
   dateInput.value = "";
   input.focus();
@@ -99,7 +108,10 @@ form.addEventListener("submit", (event) => {
 
 list.addEventListener("change", (event) => {
   const id = event.target.closest(".todo").dataset.id;
-  update(todos.map((t) => (t.id === id ? { ...t, done: event.target.checked } : t)));
+  const done = event.target.checked;
+  update(
+    todos.map((t) => (t.id === id ? { ...t, done, completedAt: done ? Date.now() : null } : t))
+  );
 });
 
 list.addEventListener("click", (event) => {
@@ -109,6 +121,14 @@ list.addEventListener("click", (event) => {
 });
 
 clearDone.addEventListener("click", () => update(todos.filter((t) => !t.done)));
+
+// Exports every task, regardless of the active filter.
+exportButton.addEventListener("click", () =>
+  exportTodosToExcel(
+    todos.map((t) => ({ ...t, created: createdAt(t) })),
+    todayKey()
+  )
+);
 
 filterButtons.forEach((button) =>
   button.addEventListener("click", () => {

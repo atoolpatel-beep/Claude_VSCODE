@@ -217,7 +217,8 @@ body {
 
 .btn--primary:focus-visible,
 .filter:focus-visible,
-.btn--link:focus-visible {
+.btn--link:focus-visible,
+.btn--export:focus-visible {
   outline: none;
   box-shadow: 0 0 0 3px var(--accent-soft), 0 0 0 4px var(--accent);
 }
@@ -235,13 +236,44 @@ body {
   color: var(--peach-text);
 }
 
+.btn--export {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: var(--mint-bg);
+  color: var(--mint-text);
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+.btn--export:hover {
+  background: var(--mint-text);
+  color: #fff;
+}
+
+.btn--export:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: var(--mint-bg);
+  color: var(--mint-text);
+}
+
 /* Toolbar + filters */
 .toolbar {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
   margin: 24px 0 8px;
+}
+
+.toolbar__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
 }
 
 .filters {
