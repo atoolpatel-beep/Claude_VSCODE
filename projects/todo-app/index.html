@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Hexaware Tasks</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="topbar__inner">
+        <a class="brand" href="#" aria-label="Hexaware Tasks home">
+          <!-- Place the official logo file at assets/hexaware-logo.svg; the text wordmark shows until then. -->
+          <img
+            class="brand__logo"
+            src="assets/hexaware-logo.svg"
+            alt="Hexaware"
+            onerror="this.hidden = true; this.nextElementSibling.hidden = false"
+          />
+          <span class="brand__wordmark" hidden>Hexaware</span>
+        </a>
+        <span class="topbar__divider" aria-hidden="true"></span>
+        <span class="topbar__product">Task Manager</span>
+      </div>
+    </header>
+
+    <main class="page">
+      <section class="card">
+        <header class="card__header">
+          <div>
+            <h1 class="card__title">My Tasks</h1>
+            <p class="card__subtitle" id="today"></p>
+          </div>
+          <p class="badge" id="count" aria-live="polite">0 tasks left</p>
+        </header>
+
+        <form class="add" id="add-form" autocomplete="off">
+          <div class="field field--grow">
+            <label for="new-todo" class="field__label">Task</label>
+            <input id="new-todo" class="field__input" type="text" placeholder="What needs to be done?" maxlength="200" required />
+          </div>
+          <div class="field">
+            <label for="new-date" class="field__label">Due date <span class="field__hint">(optional)</span></label>
+            <input id="new-date" class="field__input" type="date" />
+          </div>
+          <button class="btn btn--primary" type="submit">Add task</button>
+        </form>
+
+        <div class="toolbar">
+          <nav class="filters" aria-label="Filter tasks">
+            <button class="filter is-active" data-filter="all" type="button">All</button>
+            <button class="filter" data-filter="active" type="button">Active</button>
+            <button class="filter" data-filter="done" type="button">Completed</button>
+          </nav>
+          <button class="btn btn--link" id="clear-done" type="button">Clear completed</button>
+        </div>
+
+        <ul class="list" id="list"></ul>
+        <div class="empty" id="empty">
+          <p class="empty__title">You're all caught up</p>
+          <p class="empty__text">Add a task above to get started.</p>
+        </div>
+      </section>
+
+      <footer class="page__footer">Hexaware Technologies · Internal productivity tool</footer>
+    </main>
+
+    <template id="todo-template">
+      <li class="todo">
+        <label class="todo__check">
+          <input type="checkbox" />
+          <span class="todo__body">
+            <span class="todo__text"></span>
+            <time class="todo__date"></time>
+          </span>
+        </label>
+        <button class="todo__delete" type="button" aria-label="Delete task">&times;</button>
+      </li>
+    </template>
+
+    <script src="app.js"></script>
+  </body>
+</html>
